@@ -4,7 +4,7 @@ from pyglet import clock
 import os 
 import numpy as np
 
-from connect6 import AIAbstractClass
+from . import AIAbstractClass
 
 
 class Game():
@@ -181,19 +181,6 @@ class Game():
         if max_b == 6: return self.BLACK_WINS
         elif max_w == 6: return self.WHITE_WINS
         else: return self.IN_PROGRESS
-
-    def num_connect(line):
-        cnt_b, cnt_w = 0
-        for s in line:
-            if(s == self.EMPTY_STATE):
-                cnt_b, cnt_w = 0
-            elif(s == self.BLACK_STATE):
-                cnt_b = cnt_b + 1
-                cnt_w = 0
-            elif(s == self.WHITE_STATE):
-                cnt_w = cnt_w + 1
-                cnt_b = 0
-        return cnt_b, cnt_w
 
 
     def init_window(self):
