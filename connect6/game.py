@@ -4,7 +4,7 @@ from pyglet import clock
 import os 
 import numpy as np
 
-from connect6 import AIAbstractClass
+from . import AIAbstractClass
 
 
 class Game():
