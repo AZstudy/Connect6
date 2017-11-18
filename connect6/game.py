@@ -6,8 +6,6 @@ import numpy as np
 
 from connect6 import AIAbstractClass
 
-import torch
-from torch.autograd import Variable
 
 class Game():
     def __init__(self, AI1=None, AI2=None, states = None):
@@ -91,25 +89,15 @@ class Game():
             pass
 
     def states(self):
-        turn, left_turn, board_state = self.turn, self.left_turn, self.board_state
+        turn, left_turn, board_state, game_state = self.turn, self.left_turn, self.board_state, self.game_state
 
-        # Change my stone color to black
-        if turn == self.WHITES_TURN:
-            board_state = (3 - board_state)%3
-        left_turn = np.array([left_turn])
-
-        board_state, left_turn = torch.from_numpy(board_state).float(), torch.from_numpy(left_turn).float()
-        board_state, left_turn = board_state.view(1, 1, 9, 9), left_turn.view(1,1)
-        return (Variable(board_state), Variable(left_turn), turn)
+        return (board_state, left_turn, turn, game_state)
 
     def init_with_states(self, states):
         self.gui_mode = False
         self.clear_board()
 
-        (board_state, left_turn, turn) = states
-        self.board_state = board_state.data.numpy().reshape(9, 9)
-        self.left_turn = left_turn.data.numpy()
-        self.turn = turn
+        (self.board_state, self.left_turn, self.turn, self.game_state) = states
 
     def run_action(self,x, y):
         if self.board_state[x][y] != self.EMPTY_STATE:
@@ -121,6 +109,7 @@ class Game():
             self.board_state[x][y] = self.BLACK_STATE
         else:
             self.board_state[x][y] = self.WHITE_STATE
+
         if self.left_turn == 1: 
             self.left_turn = 2
             self.turn = self.BLACKS_TURN + self.WHITES_TURN - self.turn
